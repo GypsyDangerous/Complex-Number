@@ -131,7 +131,7 @@ class Epicycle extends Complex
   float freq;
   float phase;
   
-  Epicycle(float r, float i, float a, float f, float ph)
+  Epicycle(float r, float i, float f, float a, float ph)
   {
     re = r;
     im = i;
