@@ -2,10 +2,6 @@ class Complex
 {
   float re;
   float im;
-  float freq;
-  float amp;
-  float phase;
-
 
   Complex(float r, float i)
   {
@@ -19,22 +15,6 @@ class Complex
     im = 0;
   }
 
-  Complex(float r, float i, float f, float a, float p)
-  {
-    re = r;
-    im = i;
-    freq = f;
-    amp = a;
-    phase = p;
-  }
-
-  Complex mult(Complex other)
-  {
-    float rea = re * other.re - im * other.im;
-    float ima = re * other.im + im * other.re;
-    return new Complex(rea, ima);
-  }
-
   Complex add(Complex other) 
   {
     return new Complex(re + other.re, im + other.im);
@@ -45,13 +25,26 @@ class Complex
     return new Complex(re - other.re, im - other.im);
   }
 
-  Complex pow(int n)
+  Complex mult(Complex other)
   {
-    Complex result = this; 
-    for (int i = 0; i < n; i++)
-    {
-      result = result.mult(this);
-    }
+    float rea = re * other.re - im * other.im;
+    float ima = re * other.im + im * other.re;
+    return new Complex(rea, ima);
+  }
+
+  Complex div(Complex other)
+  {
+    float sq = other.magSq();
+    Complex result = mult(other.conjugate());
+    result.div(sq);
+    return result;
+  }
+
+  Complex power(float n)
+  {
+    float r = mag();
+    float angle = heading();
+    Complex result = new ComplexFromAngle(pow(r, n), n * angle);
     return result;
   }
 
@@ -62,29 +55,31 @@ class Complex
     return new Complex(r, i);
   }
 
-  Complex mult(float mult)
+  void mult(float mult)
   {
-    re *= sqrt(mult);
-    im *= sqrt(mult);
-    return new Complex(re, im);
+    re *= mult;
+    im *= mult;
   }
 
-  Complex div(float divisor)
+  void div(float divisor)
   {
-    float r = re / divisor;
-    float i = im / divisor;
-    return new Complex(r, i);
+    re /= divisor;
+    im /= divisor;
+  }
+
+  Complex conjugate()
+  {
+    return new Complex(re, -im);
   }
 
   void normalize()
   {
-    re /= mag();
-    im /= mag();
+    div(mag());
   }
 
   float heading()
   {
-    return atan2(im, re);
+    return atan2(re, im);
   }
 
   void setMag(float r)
@@ -110,6 +105,14 @@ class Complex
   }
 }
 
+class ComplexFromAngle extends Complex
+{
+  ComplexFromAngle(float r, float theta)
+  {
+    re = r * sin(theta);
+    im = r * cos(theta);
+  }
+}
 
 class RandomComplex extends Complex
 {
@@ -117,16 +120,6 @@ class RandomComplex extends Complex
   {
     re = random(-1, 1);
     im = random(-1, 1);
-    normalize();
-  }
-}
-
-class ComplexFromAngle extends Complex
-{
-  ComplexFromAngle(float theta)
-  {
-    re = sin(theta);
-    im = cos(theta);
     normalize();
   }
 }
