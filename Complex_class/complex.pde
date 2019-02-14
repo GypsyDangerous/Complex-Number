@@ -123,3 +123,21 @@ class RandomComplex extends Complex
     normalize();
   }
 }
+
+class Epicycle extends Complex
+{
+
+  float amp;
+  float freq;
+  float phase;
+  
+  Epicycle(float r, float i, float a, float f, float ph)
+  {
+    re = r;
+    im = i;
+    amp = a;
+    freq = f;
+    phase = ph;
+  }
+
+}
