@@ -84,8 +84,8 @@ class Complex
 
   void setMag(float r)
   {
-    this.normalize();
-    this.mult(r);
+    normalize();
+    mult(r);
   }
 
   float mag()
@@ -109,8 +109,7 @@ class ComplexFromAngle extends Complex
 {
   ComplexFromAngle(float r, float theta)
   {
-    re = r * sin(theta);
-    im = r * cos(theta);
+    super(r * sin(theta),r * cos(theta));
   }
 }
 
@@ -118,8 +117,7 @@ class RandomComplex extends Complex
 {
   RandomComplex()
   {
-    re = random(-1, 1);
-    im = random(-1, 1);
+    super(random(-1, 1),random(-1, 1));
     normalize();
   }
 }
